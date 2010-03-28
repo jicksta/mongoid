@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongoid}
-  s.version = "2.0.0.pre"
+  s.version = "2.0.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Durran Jordan"]
-  s.date = %q{2010-03-12}
+  s.date = %q{2010-03-23}
   s.email = %q{durran@gmail.com}
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -85,6 +85,7 @@ Gem::Specification.new do |s|
      "lib/mongoid/extensions/integer/conversions.rb",
      "lib/mongoid/extensions/nil/assimilation.rb",
      "lib/mongoid/extensions/object/conversions.rb",
+     "lib/mongoid/extensions/objectid/conversions.rb",
      "lib/mongoid/extensions/proc/scoping.rb",
      "lib/mongoid/extensions/string/conversions.rb",
      "lib/mongoid/extensions/string/inflections.rb",
@@ -113,7 +114,10 @@ Gem::Specification.new do |s|
      "lib/mongoid/matchers/size.rb",
      "lib/mongoid/memoization.rb",
      "lib/mongoid/named_scope.rb",
+     "lib/mongoid/observable.rb",
+     "lib/mongoid/paths.rb",
      "lib/mongoid/scope.rb",
+     "lib/mongoid/state.rb",
      "lib/mongoid/timestamps.rb",
      "lib/mongoid/validations.rb",
      "lib/mongoid/validations/associated.rb",
@@ -134,6 +138,7 @@ Gem::Specification.new do |s|
      "spec/integration/mongoid/named_scope_spec.rb",
      "spec/models/address.rb",
      "spec/models/animal.rb",
+     "spec/models/callbacks.rb",
      "spec/models/comment.rb",
      "spec/models/country_code.rb",
      "spec/models/employer.rb",
@@ -234,7 +239,10 @@ Gem::Specification.new do |s|
      "spec/unit/mongoid/matchers_spec.rb",
      "spec/unit/mongoid/memoization_spec.rb",
      "spec/unit/mongoid/named_scope_spec.rb",
+     "spec/unit/mongoid/observable_spec.rb",
+     "spec/unit/mongoid/paths_spec.rb",
      "spec/unit/mongoid/scope_spec.rb",
+     "spec/unit/mongoid/state_spec.rb",
      "spec/unit/mongoid/timestamps_spec.rb",
      "spec/unit/mongoid/validations/associated_spec.rb",
      "spec/unit/mongoid/validations/uniqueness_spec.rb",
@@ -260,6 +268,7 @@ Gem::Specification.new do |s|
      "spec/integration/mongoid/named_scope_spec.rb",
      "spec/models/address.rb",
      "spec/models/animal.rb",
+     "spec/models/callbacks.rb",
      "spec/models/comment.rb",
      "spec/models/country_code.rb",
      "spec/models/employer.rb",
@@ -359,7 +368,10 @@ Gem::Specification.new do |s|
      "spec/unit/mongoid/matchers_spec.rb",
      "spec/unit/mongoid/memoization_spec.rb",
      "spec/unit/mongoid/named_scope_spec.rb",
+     "spec/unit/mongoid/observable_spec.rb",
+     "spec/unit/mongoid/paths_spec.rb",
      "spec/unit/mongoid/scope_spec.rb",
+     "spec/unit/mongoid/state_spec.rb",
      "spec/unit/mongoid/timestamps_spec.rb",
      "spec/unit/mongoid/validations/associated_spec.rb",
      "spec/unit/mongoid/validations/uniqueness_spec.rb",
@@ -375,21 +387,21 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activemodel>, [">= 3.0.pre"])
       s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.pre"])
-      s.add_runtime_dependency(%q<mongo>, [">= 0.18.2"])
-      s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
+      s.add_runtime_dependency(%q<mongo>, [">= 0.19.1"])
+      s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<mocha>, [">= 0.9.8"])
     else
       s.add_dependency(%q<activemodel>, [">= 3.0.pre"])
       s.add_dependency(%q<will_paginate>, [">= 3.0.pre"])
-      s.add_dependency(%q<mongo>, [">= 0.18.2"])
-      s.add_dependency(%q<rspec>, [">= 1.2.9"])
+      s.add_dependency(%q<mongo>, [">= 0.19.1"])
+      s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<mocha>, [">= 0.9.8"])
     end
   else
     s.add_dependency(%q<activemodel>, [">= 3.0.pre"])
     s.add_dependency(%q<will_paginate>, [">= 3.0.pre"])
-    s.add_dependency(%q<mongo>, [">= 0.18.2"])
-    s.add_dependency(%q<rspec>, [">= 1.2.9"])
+    s.add_dependency(%q<mongo>, [">= 0.19.1"])
+    s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<mocha>, [">= 0.9.8"])
   end
 end

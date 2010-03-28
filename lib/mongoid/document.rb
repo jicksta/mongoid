@@ -177,30 +177,12 @@ module Mongoid #:nodoc:
         "#<#{self.class.name} _id: #{id}, #{attrs}>"
       end
 
-      # Returns true is the +Document+ has not been persisted to the database,
-      # false if it has. This is determined by the variable @new_record
-      # and NOT if the object has an id.
-      def new_record?
-        @new_record == true
-      end
-
-      # Sets the new_record boolean - used after document is saved.
-      def new_record=(saved)
-        @new_record = saved
-      end
-
-      # Checks if the document has been saved to the database.
-      def persisted?
-        !new_record?
-      end
-
-      # Set the changed state of the +Document+ then notify observers that it has changed.
+      # Notify observers of an update.
       #
       # Example:
       #
       # <tt>person.notify</tt>
       def notify
-        changed(true)
         notify_observers(self)
       end
 
