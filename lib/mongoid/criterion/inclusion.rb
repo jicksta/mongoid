@@ -84,10 +84,14 @@ module Mongoid #:nodoc:
         when String
           @selector.update("$where" => selector)
         else
-          @selector.update(selector ? selector.expand_complex_criteria : {})
+          if selector
+            merged_selectors = hash_concatenation(@selector,selector, %w[$in $nin $all])
+            @selector.merge! merged_selectors
+          end
         end
         self
       end
+      
     end
   end
 end

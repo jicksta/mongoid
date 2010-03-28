@@ -137,7 +137,7 @@ module Mongoid #:nodoc:
     #
     # <tt>criteria.merge({ :conditions => { :title => "Sir" } })</tt>
     def merge(other)
-      @selector.update(other.selector)
+      @selector.update hash_concatenation(@selector, other.selector, %w[$nin $in $all])
       @options.update(other.options)
       @documents = other.documents
     end
@@ -232,7 +232,33 @@ module Mongoid #:nodoc:
     #
     # <tt>criteria.update_selector({ :field => "value" }, "$in")</tt>
     def update_selector(attributes, operator)
-      attributes.each { |key, value| @selector[key] = { operator => value } }; self
+      attributes.each do |key, value|
+        case operator when "$in", "$nin", "$all"
+          value = Array.wrap value
+          value = (@selector[key] + value).uniq if @selector.has_key? key
+        end
+        @selector[key] = { operator => value }
+      end
+      self
     end
+
+		def hash_concatenation(to,from,merged_keys=nil)
+			to, from = to.expand_complex_criteria, from.expand_complex_criteria
+			from.each_pair do |(key,value)|
+				if to.has_key?(key)
+					case value
+						when Array
+						  if merged_keys.nil? || merged_keys.include?(key)
+								value = (Array.wrap(to[key]) + Array.wrap(value)).uniq
+							end
+						when Hash
+							value = hash_concatenation(to[key],value,merged_keys)
+					end
+				end
+				to[key] = value
+			end
+			to
+		end
+
   end
 end

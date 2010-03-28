@@ -186,6 +186,16 @@ describe Mongoid::Criteria do
           Person.criteria.where(:title.in => ["Sir", "Madam"]).should == [@person]
         end
 
+        it "combines the array critera when in criteria are chained" do
+          fembot = Person.create(:title => "Madam", :ssn => 7654)
+          criteria = Person.criteria.
+              where(:title.in => ["Sir"]).
+              where(:title.in => ["Madam"])
+          require 'pp'
+          pp criteria.selector
+          criteria.sort_by(&:title).should == [fembot,@person]
+        end
+
       end
 
       context "#lt" do
@@ -216,6 +226,16 @@ describe Mongoid::Criteria do
 
         it "returns those matching a nin clause" do
           Person.criteria.where(:title.nin => ["Esquire", "Congressman"]).should == [@person]
+        end
+        
+        it "combines the array critera when in criteria are chained" do
+          fembot   = Person.create(:title => "Madam", :ssn => 7654)
+          ferenghi = Person.create(:title => "Damon", :ssn => 1e7)
+          Person.criteria.
+              where(:title.nin => ["Damon"]).
+              where(:title.nin => ["Sir"]).
+              where(:title.nin => ["Esquire"]).
+              should == [fembot]
         end
 
       end

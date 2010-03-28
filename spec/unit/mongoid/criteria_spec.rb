@@ -505,11 +505,18 @@ describe Mongoid::Criteria do
     context "chaining more than one scope" do
 
       before do
-        @criteria = Person.accepted.old.knight
+        @criteria = Person.accepted.old.knight.humanist.scientist
       end
 
       it "returns the final merged criteria" do
-        @criteria.selector.should == { :title => "Sir", :terms => true, :age => { "$gt" => 50 } }
+        merged = @criteria.selector.expand_complex_criteria
+        merged.except(:name).should == {
+            :title   => "Sir",
+            :terms   => true,
+            :age     => { "$gt" => 50 }
+        }
+        merged[:name]["$in"].sort.should == ["Richard Dawkins", "Christopher Hitchens", "Sam Harris",
+                     "Dan Dennett", "Francis Collins", "Alan Kay"].sort
       end
 
     end

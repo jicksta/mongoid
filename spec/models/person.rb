@@ -90,6 +90,12 @@ class Person
     def old
       criteria.where(:age => { "$gt" => 50 })
     end
+    def humanist
+      criteria.where(:name.in => ["Richard Dawkins", "Christopher Hitchens", "Sam Harris", "Dan Dennett"])
+    end
+    def scientist
+      criteria.where(:name.in => ["Richard Dawkins", "Sam Harris", "Francis Collins", "Alan Kay"])
+    end
   end
 
 end
